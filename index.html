@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chicago · New York — Itinéraire 10 jours</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #f5f0e8;
+    --cream: #ede8dc;
+    --accent-chi: #c0392b;
+    --accent-ny: #1a5276;
+    --gold: #b8860b;
+    --muted: #7a7060;
+    --border: #d4cfc4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 60px 40px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(245,240,232,0.08);
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 100px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 1px solid rgba(245,240,232,0.05);
+  }
+
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  header h1 em {
+    font-style: italic;
+    color: rgba(245,240,232,0.6);
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: rgba(245,240,232,0.55);
+    letter-spacing: 0.5px;
+  }
+
+  .header-meta span::before {
+    content: '— ';
+    color: var(--gold);
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+  }
+
+  /* CITY SECTION */
+  .city-section {
+    margin-top: 60px;
+  }
+
+  .city-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    padding: 28px 0 20px;
+    border-top: 2px solid var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .city-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+  }
+
+  .city-header h2.chicago { color: var(--accent-chi); }
+  .city-header h2.newyork { color: var(--accent-ny); }
+
+  .city-duration {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .city-desc {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 36px;
+    font-style: italic;
+  }
+
+  /* DAY CARD */
+  .day {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 0 24px;
+    margin-bottom: 36px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .day:nth-child(1) { animation-delay: 0.05s; }
+  .day:nth-child(2) { animation-delay: 0.10s; }
+  .day:nth-child(3) { animation-delay: 0.15s; }
+  .day:nth-child(4) { animation-delay: 0.20s; }
+  .day:nth-child(5) { animation-delay: 0.25s; }
+  .day:nth-child(6) { animation-delay: 0.30s; }
+
+  .day-number {
+    text-align: right;
+    padding-top: 3px;
+  }
+
+  .day-number .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--border);
+    line-height: 1;
+    display: block;
+  }
+
+  .day-number .label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--border);
+  }
+
+  .day-content {
+    border-left: 1px solid var(--border);
+    padding-left: 24px;
+    padding-bottom: 8px;
+  }
+
+  .day-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 400;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+
+  /* STOPS */
+  .stop {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .stop:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .stop-time {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    min-width: 52px;
+    padding-top: 2px;
+  }
+
+  .stop-info {}
+
+  .stop-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+
+  .stop-note {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-right: 6px;
+    margin-bottom: 5px;
+  }
+
+  .tag-musee  { background: #f0e8d8; color: #8b5e3c; }
+  .tag-nature { background: #e8f0e4; color: #3d6b3a; }
+  .tag-street { background: #e8eaf0; color: #3a4a6b; }
+  .tag-gratuit { background: #f0f0f0; color: #555; }
+  .tag-alert  { background: #fdf0e8; color: #8b5e2a; border: 1px solid #e8c89a; }
+
+  /* TIPS BOX */
+  .tips-box {
+    background: var(--cream);
+    border-left: 3px solid var(--gold);
+    padding: 18px 24px;
+    margin: 48px 0 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .tips-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    margin-bottom: 10px;
+    color: var(--gold);
+  }
+
+  .tips-box ul {
+    list-style: none;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .tips-box ul li {
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .tips-box ul li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  /* DIVIDER */
+  .divider {
+    text-align: center;
+    margin: 60px 0;
+    color: var(--border);
+    font-size: 22px;
+    letter-spacing: 8px;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 32px 40px;
+    background: var(--ink);
+    color: rgba(245,240,232,0.3);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    header { padding: 40px 24px 36px; }
+    .container { padding: 0 24px 60px; }
+    .day { grid-template-columns: 44px 1fr; gap: 0 16px; }
+    .day-content { padding-left: 16px; }
+    .header-meta { gap: 16px; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="header-label">Voyage en couple · Transports en commun</p>
+    <h1>Chicago<br><em>&amp; New York</em></h1>
+    <div class="header-meta">
+      <span>4 jours à Chicago</span>
+      <span>6 jours à New York</span>
+      <span>Culture · Nature · Street life</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ═══════════ CHICAGO ═══════════ -->
+  <section class="city-section">
+    <div class="city-header">
+      <h2 class="chicago">Chicago</h2>
+      <span class="city-duration">4 jours</span>
+    </div>
+    <p class="city-desc">Architecture de classe mondiale, quartiers créatifs, bord du lac Michigan — une ville à explorer couche par couche.</p>
+
+    <!-- J1 -->
+    <div class="day">
+      <div class="day-number"><span class="num">1</span><span class="label">Jour</span></div>
+      <div class="day-content">
+        <h3 class="day-title">Architecture &amp; Waterfront</h3>
+        <div class="stop">
+          <span class="stop-time">9h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Chicago Architecture Center</div>
+            <div class="stop-note">Visite guidée à pied ou croisière sur la rivière. Le meilleur point d'entrée pour comprendre la ville.</div>
+            <span class="tag tag-musee">Musée</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">12h30</span>
+          <div class="stop-info">
+            <div class="stop-name">Chicago Riverwalk</div>
+            <div class="stop-note">Déjeuner en bord de rivière avec vue sur les gratte-ciels. Promenade au fil de l'eau.</div>
+            <span class="tag tag-nature">Plein air</span><span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">14h30</span>
+          <div class="stop-info">
+            <div class="stop-name">Millennium Park</div>
+            <div class="stop-note">The Bean (Cloud Gate), Jay Pritzker Pavilion, Crown Fountain.</div>
+            <span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">15h30</span>
+          <div class="stop-info">
+            <div class="stop-name">Art Institute of Chicago</div>
+            <div class="stop-note">Monet, Van Gogh, Nighthawks, miniatures Thorne. Prévoir 2–3h minimum.</div>
+            <span class="tag tag-musee">Musée</span>
+            <span class="tag tag-alert">⚠ Fermé le mardi · Gratuit jeudi pour résidents IL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- J2 -->
+    <div class="day">
+      <div class="day-number"><span class="num">2</span><span class="label">Jour</span></div>
+      <div class="day-content">
+        <h3 class="day-title">Quartiers &amp; Street Life</h3>
+        <div class="stop">
+          <span class="stop-time">10h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Wicker Park</div>
+            <div class="stop-note">Brunch dans un café du quartier, boutiques indépendantes, flea markets. Ambiance créative.</div>
+            <span class="tag tag-street">Quartier</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">13h00</span>
+          <div class="stop-info">
+            <div class="stop-name">The 606</div>
+            <div class="stop-note">Ancienne voie ferrée reconvertie en trail surélevé (2,7 miles). Traverse Wicker Park jusqu'à Humboldt Park. Vues urbaines insolites.</div>
+            <span class="tag tag-nature">Plein air</span><span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">17h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Logan Square</div>
+            <div class="stop-note">Quartier bobo-créatif, dîner sur place. Nombreux restaurants et bars de qualité.</div>
+            <span class="tag tag-street">Quartier</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- J3 -->
+    <div class="day">
+      <div class="day-number"><span class="num">3</span><span class="label">Jour</span></div>
+      <div class="day-content">
+        <h3 class="day-title">Culture Alternative</h3>
+        <div class="stop">
+          <span class="stop-time">10h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Pilsen — Quartier des murales</div>
+            <div class="stop-note">Quartier mexicain de Chicago, couvert de fresques géantes. Balade à pied. Prendre le L Pink Line jusqu'à 18th St.</div>
+            <span class="tag tag-street">Street art</span><span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">13h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Museum of Science and Industry</div>
+            <div class="stop-note">L'un des meilleurs musées scientifiques des États-Unis. Sous-marin U-505, train grandeur nature, planétarium. Prévoir 4–5h.</div>
+            <span class="tag tag-musee">Musée</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- J4 -->
+    <div class="day">
+      <div class="day-number"><span class="num">4</span><span class="label">Jour</span></div>
+      <div class="day-content">
+        <h3 class="day-title">Nature &amp; Panoramas</h3>
+        <div class="stop">
+          <span class="stop-time">9h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Lincoln Park</div>
+            <div class="stop-note">Grand parc bord du lac Michigan. Zoo gratuit, conservatoire, sentiers le long du lac.</div>
+            <span class="tag tag-nature">Nature</span><span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">14h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Observatoire — Vue skyline</div>
+            <div class="stop-note">360 Chicago (John Hancock) ou Skydeck (Willis Tower) pour une vue imprenable sur le skyline et le lac Michigan.</div>
+            <span class="tag tag-street">Panorama</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">19h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Dîner — West Loop ou River North</div>
+            <div class="stop-note">Les deux quartiers gastronomiques phares de la ville. West Loop = restaurant row de Chicago.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <!-- ═══════════ NEW YORK ═══════════ -->
+  <section class="city-section">
+    <div class="city-header">
+      <h2 class="newyork">New York</h2>
+      <span class="city-duration">6 jours · hors classiques</span>
+    </div>
+    <p class="city-desc">Tu connais déjà les incontournables — place aux Queens, Brooklyn underground, Bronx verdoyant et Manhattan secret.</p>
+
+    <!-- J5 -->
+    <div class="day">
+      <div class="day-number"><span class="num">5</span><span class="label">Jour</span></div>
+      <div class="day-content">
+        <h3 class="day-title">Queens Off the Beaten Path</h3>
+        <div class="stop">
+          <span class="stop-time">9h30</span>
+          <div class="stop-info">
+            <div class="stop-name">Astoria Park</div>
+            <div class="stop-note">Grand parc waterfront avec vues spectaculaires sur les ponts Triborough &amp; Hell Gate et Manhattan. Piste de course, piscine olympique en été.</div>
+            <span class="tag tag-nature">Nature</span><span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">12h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Déjeuner à Astoria</div>
+            <div class="stop-note">Melting-pot culinaire exceptionnel : grec, égyptien, coréen, colombien. Broadway Ave est le cœur du quartier.</div>
+            <span class="tag tag-street">Quartier</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">14h00</span>
+          <div class="stop-info">
+            <div class="stop-name">The Noguchi Museum</div>
+            <div class="stop-note">Musée de sculpture intimiste dans une ancienne usine. Jardin zen inclus. L'un des musées les plus beaux et les plus ignorés de NYC.</div>
+            <span class="tag tag-musee">Musée</span>
+            <span class="tag tag-alert">⚠ Fermé lundi &amp; mardi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- J6 -->
+    <div class="day">
+      <div class="day-number"><span class="num">6</span><span class="label">Jour</span></div>
+      <div class="day-content">
+        <h3 class="day-title">Flushing Meadows &amp; Queens Museum</h3>
+        <div class="stop">
+          <span class="stop-time">10h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Flushing Meadows Corona Park</div>
+            <div class="stop-note">L'Unisphere (symbole de l'Expo 1964), le Queens Museum, le New York Hall of Science. Immense parc, ambiance très new-yorkaise loin des flux touristiques.</div>
+            <span class="tag tag-nature">Parc</span><span class="tag tag-gratuit">Entrée libre</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">19h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Dîner à Flushing Chinatown</div>
+            <div class="stop-note">La meilleure street food asiatique de NYC. Dim sum, ramen, hot pot — à deux minutes du parc.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- J7 -->
+    <div class="day">
+      <div class="day-number"><span class="num">7</span><span class="label">Jour</span></div>
+      <div class="day-content">
+        <h3 class="day-title">Brooklyn Underground</h3>
+        <div class="stop">
+          <span class="stop-time">10h00</span>
+          <div class="stop-info">
+            <div class="stop-name">The Bushwick Collective</div>
+            <div class="stop-note">Quartier Bushwick, murales géantes au ras du sol. Pur street art international. Prendre le L train jusqu'à Jefferson St.</div>
+            <span class="tag tag-street">Street art</span><span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">14h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Green-Wood Cemetery</div>
+            <div class="stop-note">Cimetière historique de 1848, arboretum classé, mausolées spectaculaires. Vue sur Manhattan depuis les hauteurs. Paisible et fascinant.</div>
+            <span class="tag tag-nature">Patrimoine</span><span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">19h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Dîner à Williamsburg</div>
+            <div class="stop-note">Vie nocturne et restaurants à 10 min en métro de Green-Wood.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- J8 -->
+    <div class="day">
+      <div class="day-number"><span class="num">8</span><span class="label">Jour</span></div>
+      <div class="day-content">
+        <h3 class="day-title">High Line &amp; Chelsea</h3>
+        <div class="stop">
+          <span class="stop-time">9h00</span>
+          <div class="stop-info">
+            <div class="stop-name">The High Line</div>
+            <div class="stop-note">Parc surélevé sur ancienne voie ferrée. Art contemporain, vues sur l'Hudson, Hudson Yards. Little Island à l'extrémité sud.</div>
+            <span class="tag tag-nature">Parc</span><span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">12h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Galeries d'art de Chelsea</div>
+            <div class="stop-note">La plus forte concentration de galeries d'art contemporain des États-Unis. Entrée libre dans presque toutes.</div>
+            <span class="tag tag-musee">Art</span><span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">19h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Meatpacking District</div>
+            <div class="stop-note">Dîner et vie nocturne.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- J9 -->
+    <div class="day">
+      <div class="day-number"><span class="num">9</span><span class="label">Jour</span></div>
+      <div class="day-content">
+        <h3 class="day-title">Le Bronx &amp; Nature Sauvage</h3>
+        <div class="stop">
+          <span class="stop-time">10h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Wave Hill</div>
+            <div class="stop-note">Jardins suspendus sur les hauteurs du Bronx avec vue imprenable sur l'Hudson et les Palisades. 28 acres, serres tropicales, galeries. ~10$. Prendre le Metro-North jusqu'à Riverdale.</div>
+            <span class="tag tag-nature">Jardin</span>
+            <span class="tag tag-alert">⚠ Fermé le lundi · ~10$</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">14h30</span>
+          <div class="stop-info">
+            <div class="stop-name">Inwood Hill Park</div>
+            <div class="stop-note">La dernière forêt naturelle de Manhattan. Falaises, grottes amérindiennes, vieux chênes. Vue sur le Henry Hudson Bridge. Des bald eagles parfois aperçus.</div>
+            <span class="tag tag-nature">Forêt</span><span class="tag tag-gratuit">Gratuit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- J10 -->
+    <div class="day">
+      <div class="day-number"><span class="num">10</span><span class="label">Jour</span></div>
+      <div class="day-content">
+        <h3 class="day-title">Governors Island <em style="font-size:13px; font-weight:300; color:var(--muted)">(mai–oct)</em></h3>
+        <div class="stop">
+          <span class="stop-time">10h00</span>
+          <div class="stop-info">
+            <div class="stop-name">Governors Island</div>
+            <div class="stop-note">Ferry depuis Battery Maritime Building (Slip 7). Vélos en location, espaces verts, vues panoramiques sur la Statue de la Liberté et le skyline. QC NY Spa possible sur réservation.</div>
+            <span class="tag tag-nature">Île</span>
+            <span class="tag tag-alert">⚠ Accessible mai–octobre · Ferry ~3$</span>
+          </div>
+        </div>
+        <div class="stop">
+          <span class="stop-time">—</span>
+          <div class="stop-info">
+            <div class="stop-name">Plan B (hors saison)</div>
+            <div class="stop-note">Brooklyn Heights Promenade + DUMBO + Brooklyn Bridge Park waterfront. Vues exceptionnelles sur Manhattan sans foule.</div>
+            <span class="tag tag-nature">Alternative</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- TIPS -->
+  <div class="tips-box">
+    <h3>Notes pratiques</h3>
+    <ul>
+      <li>Chicago : L'Art Institute est fermé le mardi — à planifier en conséquence</li>
+      <li>Chicago : Le Museum of Science and Industry ouvre à 9h30, prévoir une journée entière</li>
+      <li>New York : Le Noguchi Museum est fermé lundi et mardi</li>
+      <li>New York : Wave Hill est fermé le lundi</li>
+      <li>New York : Governors Island n'est ouvert qu'entre mai et octobre</li>
+      <li>Transports : Chicago L (CTA) couvre l'ensemble du programme · NYC MetroCard illimitée recommandée</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  Itinéraire généré avec Claude · ICHKA Studio
+</footer>
+
+</body>
+</html>
